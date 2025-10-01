@@ -1,0 +1,3 @@
+[submodule "lkm/singularity"]
+	path = lkm/rk-s1ngularity
+	url = https://github.com/bahorn/Singularity-experiments.git
