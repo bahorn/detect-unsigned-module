@@ -6,8 +6,7 @@ import itertools
 
 # we need to get something into the dmesg after singularity loads otherwise its
 # hooks cause inf loops.
-os.system('insmod ./lkm/goat/goat.ko')
-os.system('rmmod goat')
+os.system('echo "userland" | sudo tee /dev/kmsg')
 
 kmsg_lines = []
 with open('/dev/kmsg', 'rb') as f:
