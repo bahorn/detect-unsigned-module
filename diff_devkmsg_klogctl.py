@@ -66,4 +66,4 @@ with open('/tmp/b.txt', 'w') as f:
 
 
 os.system("diff --color=always /tmp/a.txt /tmp/b.txt")
-# os.system("rm /tmp/a.txt /tmp/b.txt")
+os.system("rm /tmp/a.txt /tmp/b.txt")
