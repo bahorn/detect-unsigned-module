@@ -10,7 +10,7 @@ to tamper with dmesg output.
 
 ### Setup
 
-Build the LKMs with?
+Build the LKMs with:
 ```
 just build-goat
 just build-singularity
@@ -53,6 +53,21 @@ If you get lines like:
 * lines about loading modules.
 
 those are pretty good detection signals.
+
+For example, if you load singularity after already running `detect.py`, you'll
+get output like:
+
+```
+$ sudo python3 diff_devkmsg_klogctl.py
+537,538d536                                                                      < systemd[1]: Listening on systemd-journald-dev-log.socket - Journal Socket (/dev/log).
+< systemd[1]: Listening on systemd-journald.socket - Journal Socket.             547d544                                                                          < systemd[1]: Starting systemd-journald.service - Journal Service...
+551d547                                                                          < systemd-journald[276]: Collecting audit messages is disabled.                  565d560
+< systemd[1]: Started systemd-journald.service - Journal Service.                567,568d561                                                                      < systemd-journald[276]: Received client request to flush runtime journal.       < systemd-journald[276]: File /var/log/journal/5b8d8f5c116e4bb68ecb9d786884a225/system.journal corrupted or uncleanly shut down, renaming and replacing.
+585d577                                                                          < systemd-journald[276]: File /var/log/journal/5b8d8f5c116e4bb68ecb9d786884a225/user-1000.journal corrupted or uncleanly shut down, renaming and replacing.
+588d579                                                                          < CPU: 0 PID: 1173 Comm: cc1 Not tainted 6.8.0-85-generic #85-Ubuntu             652d642
+< [    276]     0   276    10576     1090      288      800         2    90112        0          -250 systemd-journal                                             684d673
+< goat: module verification failed: signature and/or required key missing - tainting kernel                                                                       688d676
+```
 
 ## License
 
