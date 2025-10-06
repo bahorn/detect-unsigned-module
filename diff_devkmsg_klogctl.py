@@ -43,9 +43,14 @@ for a, b in list(itertools.zip_longest(klogctl_lines, filter(lambda x: chr(x[0])
         print('b> ', line_b)
         lines_b.append(line_b)
 
-with open('a.txt', 'w') as f:
+
+# lazy lol
+with open('/tmp/a.txt', 'w') as f:
     f.write('\n'.join(lines_a))
 
-with open('b.txt', 'w') as f:
+with open('/tmp/b.txt', 'w') as f:
     f.write('\n'.join(lines_b))
 
+
+os.system("diff /tmp/a.txt /tmp/b.txt")
+os.system("rm /tmp/a.txt /tmp/b.txt")
