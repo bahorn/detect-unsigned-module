@@ -6,14 +6,23 @@ import itertools
 
 # we need to get something into the dmesg after singularity loads otherwise its
 # hooks cause inf loops.
-os.system('echo "userland" | sudo tee /dev/kmsg')
+os.system('echo "userland" | sudo tee /dev/kmsg > /dev/null')
 
 kmsg_lines = []
 with open('/dev/kmsg', 'rb') as f:
     while select.select([f], [], [], 0.1)[0]:
         kmsg_lines += f.readline().decode('unicode_escape').strip().split('\n')
 
-kmsg_lines = filter(lambda x: x[0] in '1234567890', kmsg_lines)
+def filter_kmsg(line):
+    # persist issue with these not appearing in klogctl()
+    to_filter = ['SUBSYSTEM=', 'DEVICE=']
+    for x in to_filter:
+        if line.startswith(x):
+            return False
+    return True
+
+kmsg_lines += ['']
+kmsg_lines = filter(filter_kmsg, kmsg_lines)
 
 libc = ctypes.CDLL(None)
 klogctl = libc.klogctl
@@ -35,14 +44,16 @@ for a, b in itertools.zip_longest(klogctl_lines, kmsg_lines):
     if a is not None:
         try:
             line_a = a.split(']', 1)[1].strip()
-            # print('a> ', a)
-            lines_a.append(line_a)
         except:
-            pass
+            line_a = a.strip()
+        lines_a.append(line_a)
 
     if b is not None:
-        line_b = b.split(';', 1)[1].strip()
-        # print('b> ', line_b)
+        try:
+            line_b = b.split(';', 1)[1].strip()
+        except:
+            line_b = b.strip()
+
         lines_b.append(line_b)
 
 
@@ -55,4 +66,4 @@ with open('/tmp/b.txt', 'w') as f:
 
 
 os.system("diff --color=always /tmp/a.txt /tmp/b.txt")
-os.system("rm /tmp/a.txt /tmp/b.txt")
+# os.system("rm /tmp/a.txt /tmp/b.txt")
