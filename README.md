@@ -59,14 +59,28 @@ get output like:
 
 ```
 $ sudo python3 diff_devkmsg_klogctl.py
-537,538d536                                                                      < systemd[1]: Listening on systemd-journald-dev-log.socket - Journal Socket (/dev/log).
-< systemd[1]: Listening on systemd-journald.socket - Journal Socket.             547d544                                                                          < systemd[1]: Starting systemd-journald.service - Journal Service...
-551d547                                                                          < systemd-journald[276]: Collecting audit messages is disabled.                  565d560
-< systemd[1]: Started systemd-journald.service - Journal Service.                567,568d561                                                                      < systemd-journald[276]: Received client request to flush runtime journal.       < systemd-journald[276]: File /var/log/journal/5b8d8f5c116e4bb68ecb9d786884a225/system.journal corrupted or uncleanly shut down, renaming and replacing.
-585d577                                                                          < systemd-journald[276]: File /var/log/journal/5b8d8f5c116e4bb68ecb9d786884a225/user-1000.journal corrupted or uncleanly shut down, renaming and replacing.
-588d579                                                                          < CPU: 0 PID: 1173 Comm: cc1 Not tainted 6.8.0-85-generic #85-Ubuntu             652d642
-< [    276]     0   276    10576     1090      288      800         2    90112        0          -250 systemd-journal                                             684d673
-< goat: module verification failed: signature and/or required key missing - tainting kernel                                                                       688d676
+539,540d538
+< systemd[1]: Listening on systemd-journald-dev-log.socket - Journal Socket (/dev/log).
+< systemd[1]: Listening on systemd-journald.socket - Journal Socket.
+549d546
+< systemd[1]: Starting systemd-journald.service - Journal Service...
+552d548
+< systemd-journald[277]: Collecting audit messages is disabled.
+567d562
+< systemd[1]: Started systemd-journald.service - Journal Service.
+569,570d563
+< systemd-journald[277]: Received client request to flush runtime journal.
+< systemd-journald[277]: File /var/log/journal/5b8d8f5c116e4bb68ecb9d786884a225/system.journal corrupted or uncleanly shut down, renaming and replacing.
+598d590
+< systemd-journald[277]: File /var/log/journal/5b8d8f5c116e4bb68ecb9d786884a225/user-1000.journal corrupted or uncleanly shut down, renaming and replacing.
+600d591
+< CPU: 0 PID: 997 Comm: sshd Not tainted 6.8.0-85-generic #85-Ubuntu
+664d654
+< [    277]     0   277    10543     1090      288      800         2    94208        0          -250 systemd-journal
+697d686
+< goat: module verification failed: signature and/or required key missing - tainting kernel
+700d688
+< singularity: loading out-of-tree module taints kernel.
 ```
 
 ## License
