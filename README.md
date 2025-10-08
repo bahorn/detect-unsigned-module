@@ -83,6 +83,17 @@ $ sudo python3 diff_devkmsg_klogctl.py
 < singularity: loading out-of-tree module taints kernel.
 ```
 
+### `hooked_insmod.py`
+
+Singularity (not the submodule version used) hooks `init_module()` to always
+return 0, even for unpriv'd users.
+So you can attempt to load an invalid module from any user and see if the return
+code is 0, and if so you got a detection.
+
+```
+python3 hooked_insmod.py
+```
+
 ## License
 
 MIT for detections, GPL for the goat kernel module (if that is even
