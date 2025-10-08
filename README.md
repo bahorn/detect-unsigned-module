@@ -13,6 +13,7 @@ to tamper with dmesg output.
 Build the LKMs with:
 ```
 just build-goat
+just build-nitra2
 just build-singularity
 ```
 
@@ -122,7 +123,7 @@ Uses nitra2 to see if it detects anything.
 Singularity currently bypasses it.
 
 ```
-sudo nitra.sh
+sudo nitra2.sh
 ```
 
 ## License
