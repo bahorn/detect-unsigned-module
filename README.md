@@ -127,6 +127,14 @@ patch to work around it.
 sudo nitra2.sh
 ```
 
+### `pcrtest.py`
+
+Detects kovid by looking at if the kernels taint value is reset every 5 seconds.
+
+```
+sudo python3 pcrtest.py
+```
+
 ## License
 
 MIT for detections, GPL for the goat kernel module (if that is even
