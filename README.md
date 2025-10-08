@@ -85,7 +85,7 @@ $ sudo python3 diff_devkmsg_klogctl.py
 
 ### `hooked_insmod.py`
 
-Singularity (not the submodule version used) hooks `init_module()` to always
+Singularity hooks `init_module()` to always
 return 0, even for unpriv'd users.
 So you can attempt to load an invalid module from any user and see if the return
 code is 0, and if so you got a detection.
@@ -93,6 +93,29 @@ code is 0, and if so you got a detection.
 ```
 python3 hooked_insmod.py
 ```
+
+### `can_disable_ftrace.py`
+
+Checks if it is possible to disable ftrace.
+Singularity hooks `write()` to try and stop it being disables, but this
+behaviour is detectable.
+
+```
+sudo python3 can_disable_ftrace.py
+```
+
+### `disable_ftrace.py`
+
+Uses `writev()` as a work around to disable basic attempts at stoping ftrace
+from being disabled.
+
+Run this if you can't load a module, or want to use the systems with the hooks
+all gone for deploying further forensics tools.
+
+```
+sudo python3 disable_ftrace.py
+```
+
 
 ## License
 
