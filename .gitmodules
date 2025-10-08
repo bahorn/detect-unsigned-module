@@ -3,4 +3,4 @@
 	url = https://github.com/bahorn/Singularity-experiments.git
 [submodule "lkm/nitra2"]
 	path = lkm/nitra2
-	url = https://github.com/ksen-lin/nitara2.git
+	url = https://github.com/bahorn/nitara2.git

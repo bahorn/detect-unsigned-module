@@ -119,8 +119,9 @@ sudo python3 disable_ftrace.py
 
 ### `nitra2.sh`
 
-Uses nitra2 to see if it detects anything.
-Singularity currently bypasses it.
+Uses nitara2 to see if it detects anything.
+Singularity currently bypasses upstream nitara2, but the submodule include a
+patch to work around it.
 
 ```
 sudo nitra2.sh
