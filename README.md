@@ -116,6 +116,14 @@ all gone for deploying further forensics tools.
 sudo python3 disable_ftrace.py
 ```
 
+### `nitra2.sh`
+
+Uses nitra2 to see if it detects anything.
+Singularity currently bypasses it.
+
+```
+sudo nitra.sh
+```
 
 ## License
 

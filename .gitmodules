@@ -1,3 +1,6 @@
 [submodule "lkm/singularity"]
 	path = lkm/rk-s1ngularity
 	url = https://github.com/bahorn/Singularity-experiments.git
+[submodule "lkm/nitra2"]
+	path = lkm/nitra2
+	url = https://github.com/ksen-lin/nitara2.git

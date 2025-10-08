@@ -7,3 +7,6 @@ load-singularity:
 
 build-goat:
     cd lkm/goat && make clean && make
+
+build-nitra2:
+    cd lkm/nitra2 && make clean && make
