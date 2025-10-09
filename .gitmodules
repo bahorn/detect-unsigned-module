@@ -4,3 +4,6 @@
 [submodule "lkm/nitra2"]
 	path = lkm/nitra2
 	url = https://github.com/bahorn/nitara2.git
+[submodule "lkm/kovid"]
+	path = lkm/kovid
+	url = https://github.com/carloslack/KoviD.git

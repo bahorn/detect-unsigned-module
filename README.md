@@ -1,10 +1,11 @@
 # detect-unsigned-modules
 
-A tool to detect when there is an unsigned kernel module loaded.
+Various scripts implementing detections for linux LKM rookits.
 
-This POC uses the [singularity rootkit by MatheuZSecurity](https://github.com/MatheuZSecurity/Singularity/tree/main)
-as a testcase as it is the best modern / public one that goes through the effort
-to tamper with dmesg output.
+The scripts are tested against:
+* [singularity rootkit by MatheuZSecurity](https://github.com/MatheuZSecurity/Singularity/tree/main),
+  only public one that goes through the effort to tamper with dmesg output.
+* [kovid by carloslack](https://github.com/carloslack/KoviD/tree/master)
 
 ## Usage
 
@@ -15,6 +16,7 @@ Build the LKMs with:
 just build-goat
 just build-nitra2
 just build-singularity
+just build-kovid
 ```
 
 ### `detect.py`
@@ -52,6 +54,7 @@ If you get lines like:
 * missing systemd-journal entries, as singularity removes lines containing
   "journal".
 * lines about loading modules.
+* the whole buffer being in only one, as kovid's run.sh clears the buffer.
 
 those are pretty good detection signals.
 
@@ -122,6 +125,7 @@ sudo python3 disable_ftrace.py
 Uses nitara2 to see if it detects anything.
 Singularity currently bypasses upstream nitara2, but the submodule include a
 patch to work around it.
+Kovid also does, no fix yet.
 
 ```
 sudo nitra2.sh
