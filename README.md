@@ -141,7 +141,7 @@ sudo python3 pcrtest.py
 
 ### `touched_kallsyms.py`
 
-The classic kprobe trick to get the address of `kallsyms_lookup_name()` leaves
+The [classic kprobe trick to get the address of `kallsyms_lookup_name()`](https://github.com/xcellerator/linux_kernel_hacking/issues/3#issuecomment-75795111) leaves
 an artifact in `/sys/kernel/debug/tracing/touched_functions`.
 If you grep that file for `kallsyms_lookup_name` and find it, someone used the
 trick.
