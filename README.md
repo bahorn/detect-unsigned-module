@@ -139,6 +139,17 @@ Detects kovid by looking at if the kernels taint value is reset every 5 seconds.
 sudo python3 pcrtest.py
 ```
 
+### `touched_kallsyms.py`
+
+The classic kprobe trick to get the address of `kallsyms_lookup_name()` leaves
+an artifact in `/sys/kernel/debug/tracing/touched_functions`.
+If you grep that file for `kallsyms_lookup_name` and find it, someone used the
+trick.
+
+```
+sudo python3 touched_kallsyms.py
+```
+
 ## License
 
 MIT for detections, GPL for the goat kernel module (if that is even
