@@ -5,3 +5,4 @@ modules.order
 *.cmd
 *.mod.c
 *.symvers
+private

@@ -150,6 +150,14 @@ trick.
 sudo python3 touched_kallsyms.py
 ```
 
+### `1bt.py`
+
+Read a file one byte at a time to bypass some hooks.
+
+```
+sudo python3 1bt.py /path/to/file
+```
+
 ## License
 
 MIT for detections, GPL for the goat kernel module (if that is even
