@@ -31,11 +31,11 @@ build-nitara2:
 batch-tests:
     sudo python3 detections/can_disable_ftrace.py
     sudo python3 detections/hooked_insmod.py
-    # if you have previously ran thee tests this will return positive
+    # if you have previously ran the tests this will return positive
     sudo python3 detections/pcrtest.py
     sudo python3 detections/touched_kallsyms.py
     sudo python3 detections/diff_devkmsg_klogctl.py
 
 batch-tests-lkm: batch-tests
-    sudo python3 detections/detect.py
+    sudo python3 detections/unsigned_loaded.py
     sudo ./detections/nitra2.sh

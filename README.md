@@ -25,7 +25,7 @@ just build-beautifullies # custom module to test detection bypass approaches
 These are found in `detections/` and can be ran with `just batch-tests` or `just
 batch-tests-lkm` (to include ones that load an LKM)
 
-#### `detect.py`
+#### `unsigned_loaded.py`
 
 This loads an unsigned module, and tries to see if you get the message about
 how loading one taints the kernel.
@@ -34,7 +34,7 @@ already loaded.
 This idea was briefly mentioned in my articlen tmp.0ut #4.
 
 ```
-sudo python3 detect.py
+sudo python3 unsigned_loaded.py
 ```
 
 Should say if one is probably loaded or not.
