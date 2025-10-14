@@ -14,5 +14,10 @@ load-kovid:
 build-goat:
     cd lkm/goat && make clean && make
 
+load-goat:
+    sudo insmod ./lkm/goat/goat.ko
+    # does nothing so just rmmod it
+    sudo rmmod goat
+
 build-nitra2:
     cd lkm/nitra2 && make clean && make

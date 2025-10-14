@@ -7,3 +7,6 @@
 [submodule "lkm/kovid"]
 	path = lkm/kovid
 	url = https://github.com/carloslack/KoviD.git
+[submodule "lkm/beautifullies"]
+	path = lkm/beautifullies
+	url = git@github.com:bahorn/BeautifulLies.git
