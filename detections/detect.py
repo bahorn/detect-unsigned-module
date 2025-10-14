@@ -8,7 +8,7 @@ os.system('insmod ./lkm/goat/goat.ko')
 os.system('rmmod goat')
 
 with open('/dev/kmsg', 'rb') as f:
-    while select.select([f], [], [], 5)[0]:
+    while select.select([f], [], [], 1)[0]:
         lines.append(f.readline())
 
 first_find = b'Goat Loaded'

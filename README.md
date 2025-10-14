@@ -20,7 +20,12 @@ just build-kovid
 just build-beautifullies # custom module to test detection bypass approaches
 ```
 
-### `detect.py`
+### Detections
+
+These are found in `detections/` and can be ran with `just batch-test` or `just
+batch-test-lkm` (to include ones that load an LKM)
+
+#### `detect.py`
 
 This loads an unsigned module, and tries to see if you get the message about
 how loading one taints the kernel.
@@ -38,7 +43,7 @@ Remember to reboot if you have already ran it.
 `detect_with_loaded.sh` is a test case that should trigger a detection with
 singularity.
 
-### `diff_devkmsg_klogctl.py`
+#### `diff_devkmsg_klogctl.py`
 
 This tool diffs the output between two ways of reading the kernel message
 buffer, as both aren't hooked in some rootkits.
@@ -88,7 +93,7 @@ $ sudo python3 diff_devkmsg_klogctl.py
 < singularity: loading out-of-tree module taints kernel.
 ```
 
-### `hooked_insmod.py`
+#### `hooked_insmod.py`
 
 Singularity hooks `init_module()` to always
 return 0, even for unpriv'd users.
@@ -99,7 +104,7 @@ code is 0, and if so you got a detection.
 python3 hooked_insmod.py
 ```
 
-### `can_disable_ftrace.py`
+#### `can_disable_ftrace.py`
 
 Checks if it is possible to disable ftrace.
 Singularity hooks `write()` to try and stop it being disables, but this
@@ -109,7 +114,42 @@ behaviour is detectable.
 sudo python3 can_disable_ftrace.py
 ```
 
-### `disable_ftrace.py`
+#### `nitra2.sh`
+
+Uses nitara2 to see if it detects anything.
+Singularity currently bypasses upstream nitara2, but the submodule include a
+patch to work around it.
+Kovid also does, no fix yet.
+
+```
+sudo nitra2.sh
+```
+
+#### `pcrtest.py`
+
+Detects kovid by looking at if the kernels taint value is reset every 5 seconds.
+
+```
+sudo python3 pcrtest.py
+```
+
+#### `touched_kallsyms.py`
+
+The [classic kprobe trick to get the address of `kallsyms_lookup_name()`](https://github.com/xcellerator/linux_kernel_hacking/issues/3#issuecomment-75795111) leaves
+an artifact in `/sys/kernel/debug/tracing/touched_functions`.
+If you grep that file for `kallsyms_lookup_name` and find it, someone used the
+trick.
+
+```
+sudo python3 touched_kallsyms.py
+```
+
+### Tools
+
+These are found in `tools/` and might be handy in some cases.
+
+
+#### `disable_ftrace.py`
 
 Uses `writev()` as a work around to disable basic attempts at stoping ftrace
 from being disabled.
@@ -124,37 +164,7 @@ sudo python3 disable_ftrace.py
 (the current version of singularity patched this specific syscall, but other
 disable'ing techniques exist. @ me if you need one)
 
-### `nitra2.sh`
-
-Uses nitara2 to see if it detects anything.
-Singularity currently bypasses upstream nitara2, but the submodule include a
-patch to work around it.
-Kovid also does, no fix yet.
-
-```
-sudo nitra2.sh
-```
-
-### `pcrtest.py`
-
-Detects kovid by looking at if the kernels taint value is reset every 5 seconds.
-
-```
-sudo python3 pcrtest.py
-```
-
-### `touched_kallsyms.py`
-
-The [classic kprobe trick to get the address of `kallsyms_lookup_name()`](https://github.com/xcellerator/linux_kernel_hacking/issues/3#issuecomment-75795111) leaves
-an artifact in `/sys/kernel/debug/tracing/touched_functions`.
-If you grep that file for `kallsyms_lookup_name` and find it, someone used the
-trick.
-
-```
-sudo python3 touched_kallsyms.py
-```
-
-### `1bt.py`
+#### `1bt.py`
 
 Read a file one byte at a time to bypass some hooks.
 
@@ -162,7 +172,7 @@ Read a file one byte at a time to bypass some hooks.
 sudo python3 1bt.py /path/to/file
 ```
 
-### `catv.py`
+#### `catv.py`
 
 `cat` but with `readv()` instead. just to bypass incomplete hooks.
 
