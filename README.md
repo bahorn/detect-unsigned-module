@@ -14,7 +14,7 @@ The scripts are tested against:
 Build the LKMs with:
 ```
 just build-goat
-just build-nitra2
+just build-nitara2
 just build-singularity
 just build-kovid
 just build-beautifullies # custom module to test detection bypass approaches
@@ -22,8 +22,8 @@ just build-beautifullies # custom module to test detection bypass approaches
 
 ### Detections
 
-These are found in `detections/` and can be ran with `just batch-test` or `just
-batch-test-lkm` (to include ones that load an LKM)
+These are found in `detections/` and can be ran with `just batch-tests` or `just
+batch-tests-lkm` (to include ones that load an LKM)
 
 #### `detect.py`
 
@@ -114,7 +114,7 @@ behaviour is detectable.
 sudo python3 can_disable_ftrace.py
 ```
 
-#### `nitra2.sh`
+#### `nitara2.sh`
 
 Uses nitara2 to see if it detects anything.
 Singularity currently bypasses upstream nitara2, but the submodule include a
@@ -122,7 +122,7 @@ patch to work around it.
 Kovid also does, no fix yet.
 
 ```
-sudo nitra2.sh
+sudo nitara2.sh
 ```
 
 #### `pcrtest.py`

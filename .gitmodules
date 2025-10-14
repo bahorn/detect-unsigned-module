@@ -2,7 +2,7 @@
 	path = lkm/rk-s1ngularity
 	url = https://github.com/bahorn/Singularity-experiments.git
 [submodule "lkm/nitra2"]
-	path = lkm/nitra2
+	path = lkm/nitara2
 	url = https://github.com/bahorn/nitara2.git
 [submodule "lkm/kovid"]
 	path = lkm/kovid

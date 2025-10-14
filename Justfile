@@ -25,12 +25,13 @@ build-beautifullies:
 load-beautifullies:
     cd lkm/beautifullies && just load
 
-build-nitra2:
-    cd lkm/nitra2 && make clean && make
+build-nitara2:
+    cd lkm/nitara2 && make clean && make
 
 batch-tests:
     sudo python3 detections/can_disable_ftrace.py
     sudo python3 detections/hooked_insmod.py
+    # if you have previously ran thee tests this will return positive
     sudo python3 detections/pcrtest.py
     sudo python3 detections/touched_kallsyms.py
     sudo python3 detections/diff_devkmsg_klogctl.py
