@@ -40,9 +40,6 @@ sudo python3 detect.py
 Should say if one is probably loaded or not.
 Remember to reboot if you have already ran it.
 
-`detect_with_loaded.sh` is a test case that should trigger a detection with
-singularity.
-
 #### `diff_devkmsg_klogctl.py`
 
 This tool diffs the output between two ways of reading the kernel message
