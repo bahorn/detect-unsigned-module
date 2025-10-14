@@ -161,6 +161,17 @@ Read a file one byte at a time to bypass some hooks.
 sudo python3 1bt.py /path/to/file
 ```
 
+### `catv.py`
+
+`cat` but with `readv()` instead. just to bypass incomplete hooks.
+
+```
+sudo python3 catv.py /path/to/file
+```
+
+(written using claude 4.5, as the models can currently generate sample syscall
+usage code pretty well. if this breaks, regen with another read like syscall)
+
 ## License
 
 MIT for detections, GPL for the goat kernel module (if that is even
