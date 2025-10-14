@@ -141,6 +141,16 @@ trick.
 sudo python3 touched_kallsyms.py
 ```
 
+#### `seek_stutter.py`
+
+Injects a `seek()` call between reading each byte of a file and compares it to
+the size reading the file normally.
+If they don't match, this implies something is filtering the file.
+
+```
+sudo python3 seek_stutter.py /path/to/file
+```
+
 ### Tools
 
 These are found in `tools/` and might be handy in some cases.
