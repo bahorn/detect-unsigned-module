@@ -38,4 +38,4 @@ batch-tests:
 
 batch-tests-lkm: batch-tests
     sudo python3 detections/unsigned_loaded.py
-    sudo ./detections/nitra2.sh
+    sudo ./detections/nitara2.sh
