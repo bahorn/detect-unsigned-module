@@ -17,6 +17,7 @@ just build-goat
 just build-nitra2
 just build-singularity
 just build-kovid
+just build-beautifullies # custom module to test detection bypass approaches
 ```
 
 ### `detect.py`
