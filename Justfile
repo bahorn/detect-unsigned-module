@@ -27,3 +27,13 @@ load-beautifullies:
 
 build-nitra2:
     cd lkm/nitra2 && make clean && make
+
+batch-tests:
+    sudo python3 can_disable_ftrace.py
+    sudo python3 hooked_insmod.py
+    sudo python3 pcrtest.py
+    sudo python3 touched_kallsyms.py
+    sudo python3 diff_devkmsg_klogctl.py
+
+bach-tests-lkm: batch-tests
+    sudo python3 detect.py
