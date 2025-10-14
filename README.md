@@ -120,6 +120,9 @@ all gone for deploying further forensics tools.
 sudo python3 disable_ftrace.py
 ```
 
+(the current version of singularity patched this specific syscall, but other
+disable'ing techniques exist. @ me if you need one)
+
 ### `nitra2.sh`
 
 Uses nitara2 to see if it detects anything.
