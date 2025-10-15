@@ -58,3 +58,10 @@ batch-tests-lkm rootkit="none":
     just batch-tests {{ rootkit }}
     sudo python3 detections/unsigned_loaded.py
     sudo ./detections/nitara2.sh
+
+baseline rootkit:
+    -sudo rm -r a.baseline b.baseline
+    sudo python3 baselining/system_snapshot.py a.baseline
+    just load-{{ rootkit }}
+    sudo python3 baselining/system_snapshot.py b.baseline
+    -diff -r a.baseline b.baseline

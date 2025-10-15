@@ -6,3 +6,4 @@ modules.order
 *.mod.c
 *.symvers
 private
+*.baseline

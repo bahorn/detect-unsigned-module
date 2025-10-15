@@ -211,6 +211,22 @@ sudo python3 catv.py /path/to/file
 (written using claude 4.5, as the models can currently generate sample syscall
 usage code pretty well. if this breaks, regen with another read like syscall)
 
+### Baselining
+
+These tools take a filtered snapshot of `/sys` and `/proc` to see what the
+rootkit changed.
+Might be a bit too agressive with skipping files.
+
+```
+just baseline singularity # or whatever the rootkit you want to check
+```
+
+This will output a diff showing whats changed.
+Not all differences are interesting.
+
+(baseline script was written with claude 4.5, with a lot of work done on the
+filters)
+
 ## License
 
 MIT for detections, GPL for the goat kernel module (if that is even
