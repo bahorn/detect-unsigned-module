@@ -6,6 +6,8 @@ The scripts are tested against:
 * [singularity rootkit by MatheuZSecurity](https://github.com/MatheuZSecurity/Singularity/tree/main),
   only public one that goes through the effort to tamper with dmesg output.
 * [kovid by carloslack](https://github.com/carloslack/KoviD/tree/master)
+* [beautifullies by bahorn (me)](https://github.com/bahorn/BeautifulLies), a poc
+  to test detection bypasses.
 
 ## Usage
 
