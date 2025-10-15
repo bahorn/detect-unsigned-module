@@ -44,6 +44,11 @@ batch-tests:
     # compare the output of two different ways of reading the kernel message
     # buffer
     sudo python3 detections/diff_devkmsg_klogctl.py
+    # check if we have a matching number of create_trampolines created
+    # allocations in /proc/vmallocinfo for the number of ftrace
+    # touched_functions.
+    # Experimental, might have false positives.
+    sudo python3 detections/count_trampolines.py
 
 batch-tests-lkm: batch-tests
     sudo python3 detections/unsigned_loaded.py

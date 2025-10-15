@@ -151,6 +151,19 @@ If they don't match, this implies something is filtering the file.
 sudo python3 seek_stutter.py /path/to/file
 ```
 
+#### `count_trampolines.py`
+
+Looks for a mismatch between the number of allocations created by
+`create_trampoline` (an ftrace internal function) and the number of ftrace hooks
+showing up in `touched_functions`.
+
+Might have false positives, but currently detects singularity and beautifullies.
+kovid doesn't hook reading this file unless you use `cat`.
+
+```
+sudo python3 count_trampolines.py
+```
+
 ### Tools
 
 These are found in `tools/` and might be handy in some cases.
