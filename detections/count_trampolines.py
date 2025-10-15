@@ -1,3 +1,10 @@
+"""
+count the number of ftrace trampolines in vmallocinfo and kallsyms and see if it
+matches the number in touched_functions.
+
+might have false positives, unsure how it handles removing ftrace hooks
+"""
+
 def normalize_lines(text):
     """Merge lines starting with whitespace to the previous line."""
     lines = text.split('\n')
@@ -33,8 +40,16 @@ with open('/proc/vmallocinfo', 'r') as f:
         if 'create_trampoline' in line:
             tramp_count_in_vmalloc += 1
 
-print(tramp_count_in_ftrace, tramp_count_in_vmalloc)
-if tramp_count_in_ftrace != tramp_count_in_vmalloc:
+tramp_count_in_kallsyms = 0
+
+with open('/proc/kallsyms', 'r') as f:
+    for line in f:
+        if '[__builtin__ftrace]' in line:
+            tramp_count_in_kallsyms += 1
+
+print(tramp_count_in_ftrace, tramp_count_in_vmalloc, tramp_count_in_kallsyms)
+if tramp_count_in_ftrace != tramp_count_in_vmalloc or \
+        tramp_count_in_ftrace != tramp_count_in_kallsyms:
     print('mismatched trampoline count!')
 else:
     print('trampoline count matches')
