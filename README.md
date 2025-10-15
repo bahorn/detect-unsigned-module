@@ -1,6 +1,6 @@
 # detect-unsigned-modules
 
-Various scripts implementing detections for linux LKM rookits.
+Various scripts, implementing detections for linux LKM rookits.
 
 The scripts are tested against:
 * [singularity rootkit by MatheuZSecurity](https://github.com/MatheuZSecurity/Singularity/tree/main),
@@ -39,7 +39,7 @@ This loads an unsigned module, and tries to see if you get the message about
 how loading one taints the kernel.
 If you don't get this message, its a good indicator about how one is currrently
 already loaded.
-This idea was briefly mentioned in my articlen tmp.0ut #4.
+This idea was briefly mentioned in my article in tmp.0ut #4.
 
 ```
 sudo python3 unsigned_loaded.py
@@ -231,3 +231,10 @@ filters)
 
 MIT for detections, GPL for the goat kernel module (if that is even
 copyrightable)
+
+Using claude to write some scripts, as I'm writing this on my phone while
+travelling, which the output is not copywritable as far as I'm aware (and I am
+not going to sue you over it).
+The readme and comments should indicate where this applies and doesn't include a
+substantial amount on my own work.
+Steal those at will, etc.
