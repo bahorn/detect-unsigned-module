@@ -25,6 +25,12 @@ just build-beautifullies # custom module to test detection bypass approaches
 These are found in `detections/` and can be ran with `just batch-tests` or `just
 batch-tests-lkm` (to include ones that load an LKM)
 
+Optionally run them like the following to save a load command:
+```
+just batch-tests singularity # or kovid, beautifullies, etc
+just batch-tests-lkm singularity
+```
+
 #### `unsigned_loaded.py`
 
 This loads an unsigned module, and tries to see if you get the message about

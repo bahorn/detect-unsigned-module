@@ -1,3 +1,6 @@
+load-none:
+
+
 build-singularity:
     cd lkm/rk-s1ngularity/ && make clean && make
 
@@ -28,7 +31,8 @@ load-beautifullies:
 build-nitara2:
     cd lkm/nitara2 && make clean && make
 
-batch-tests:
+batch-tests rootkit="none":
+    just load-{{ rootkit }}
     # is something blocking use from turning ftrace off
     sudo python3 detections/can_disable_ftrace.py
     # look for singularity's init_module() hook
@@ -50,6 +54,7 @@ batch-tests:
     # Experimental, might have false positives.
     sudo python3 detections/count_trampolines.py
 
-batch-tests-lkm: batch-tests
+batch-tests-lkm rootkit="none":
+    just batch-tests {{ rootkit }}
     sudo python3 detections/unsigned_loaded.py
     sudo ./detections/nitara2.sh
