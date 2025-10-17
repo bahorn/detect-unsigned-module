@@ -1,6 +1,13 @@
 load-none:
 
 
+update-submodules:
+    cd lkm/rk-s1ngularity/ && git pull
+    cd lkm/kovid/ && git pull
+    cd lkm/nitara2 && git pull
+    cd lkm/beautifullies && git pull
+
+
 build-singularity:
     cd lkm/rk-s1ngularity/ && make clean && make
 
@@ -30,6 +37,8 @@ load-beautifullies:
 
 build-nitara2:
     cd lkm/nitara2 && make clean && make
+
+# testing our detections
 
 batch-tests rootkit="none":
     just load-{{ rootkit }}
