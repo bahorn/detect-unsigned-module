@@ -167,6 +167,8 @@ showing up in `touched_functions`.
 
 Might have false positives, but currently detects singularity and beautifullies.
 kovid doesn't hook reading this file unless you use `cat`.
+Output is only currently meaningful on systems that have not used ftrace
+normally this boot (see issue #1).
 
 ```
 sudo python3 count_trampolines.py
