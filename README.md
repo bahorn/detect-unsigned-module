@@ -174,6 +174,18 @@ normally this boot (see issue #1).
 sudo python3 count_trampolines.py
 ```
 
+#### `function_trace_parents.py`
+
+When you use ftrace normally, you can see what called each function.
+This exposes some rootkits.
+
+This works by setting up function tracing for several commonly hooked functions,
+and sees if anything unexpected is calling them.
+
+```
+sudo python3 function_trace_parents.py`
+```
+
 ### Tools
 
 These are found in `tools/` and might be handy in some cases.

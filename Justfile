@@ -62,6 +62,11 @@ batch-tests rootkit="none":
     # touched_functions.
     # Experimental, might have false positives.
     sudo python3 detections/count_trampolines.py
+    # Looks at who calls commonly hooked functions.
+    # Ftrace provides caller information via trace_pipe, so we setup ftrace
+    # normally and see if we spot an unexpected caller.
+    # This can interfere with the current counting trampolines implementation.
+    sudo python3 detections/function_trace_parents.py
 
 batch-tests-lkm rootkit="none":
     just batch-tests {{ rootkit }}
