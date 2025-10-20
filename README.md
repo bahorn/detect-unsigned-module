@@ -186,6 +186,10 @@ and sees if anything unexpected is calling them.
 sudo python3 function_trace_parents.py`
 ```
 
+This detection is bypassable by using the `USE_FENTRY_OFFSET` in the various
+derrivatives of xcellerator's ftrace hooking framework, as the thunk will not be
+triggered twice when calling the original function.
+
 ### Tools
 
 These are found in `tools/` and might be handy in some cases.
