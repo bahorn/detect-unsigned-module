@@ -119,6 +119,17 @@ behaviour is detectable.
 sudo python3 can_disable_ftrace.py
 ```
 
+#### `bad_ftrace_value.py`
+
+Detection for singularity, based on how it currently attempts to fake if ftrace
+is enabled or not.
+You can write whatever you want to any file on disk called `ftrace_enabled` and
+the sysctl value will echo that back out.
+
+```
+python3 bad_ftrace_value.py
+```
+
 #### `nitara2.sh`
 
 Uses nitara2 to see if it detects anything.

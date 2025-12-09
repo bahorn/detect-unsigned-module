@@ -44,6 +44,9 @@ batch-tests rootkit="none":
     just load-{{ rootkit }}
     # is something blocking use from turning ftrace off
     sudo python3 detections/can_disable_ftrace.py
+    # a detection for singularity trying to break the previous detection
+    sudo python3 detections/bad_ftrace_value.py
+
     # look for singularity's init_module() hook
     sudo python3 detections/hooked_insmod.py
     # check if injecting seeks between reads causes a mismatch between the read
