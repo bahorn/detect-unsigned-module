@@ -19,8 +19,36 @@ with open('/proc/sys/kernel/ftrace_enabled', 'rb') as f:
 
 if curr == orig:
     print('unable to disable ftrace')
-else:
+    exit()
+
+with open('/sys/kernel/debug/tracing/set_ftrace_filter', 'wb') as f:
+    f.write(b'__x64_sys_write')
+
+# singularity fakes this value in recent versions, so we just try and setup a
+# function
+with open('/sys/kernel/debug/tracing/current_tracer', 'wb') as f:
+    f.write(b'function\n')
+
+with open('/dev/null', 'wb') as f:
+    f.write(b'aaaa')
+
+faking = False
+with open('/sys/kernel/debug/tracing/trace', 'r') as f:
+    for line in f:
+        if '#' not in line:
+            faking = True
+
+with open('/sys/kernel/debug/tracing/current_tracer', 'wb') as f:
+    f.write(b'nop\n')
+
+with open('/sys/kernel/debug/tracing/set_ftrace_filter', 'wb') as f:
+    f.write(b'\n')
+
+if not faking:
     print('able to disable ftrace, restoring')
-    with open('/proc/sys/kernel/ftrace_enabled', 'wb') as f:
-        f.write(b'1\n')
+else:
+    print('faking ftrace being disabled. probably singularity')
+
+with open('/proc/sys/kernel/ftrace_enabled', 'wb') as f:
+    f.write(b'1\n')
 
