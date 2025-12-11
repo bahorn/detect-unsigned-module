@@ -10,8 +10,12 @@ read the sysctl() version.
 
 VALUE = b'abcd'
 
-with open('/tmp/ftrace_enabled', 'wb') as f:
-    f.write(VALUE)
+try:
+    with open('/proc/sys/kernel/ftrace_enabled', 'wb') as f:
+        f.write(VALUE)
+except OSError:
+    print('not tampering with ftrace_enabled')
+    exit()
 
 import time
 time.sleep(1)
@@ -23,7 +27,4 @@ print(curr)
 if VALUE in curr:
     print('s1ngular1ty detected')
 else:
-    print('not hooking all reads of files called `ftrace_enabled`')
-
-import os
-os.remove('/tmp/ftrace_enabled')
+    print('weird behaviour, able to write invalid value to ftrace_enabled but its not preserved')

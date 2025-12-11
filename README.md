@@ -127,8 +127,8 @@ sudo python3 can_disable_ftrace.py
 
 Detection for singularity, based on how it currently attempts to fake if ftrace
 is enabled or not.
-You can write whatever you want to any file on disk called `ftrace_enabled` and
-the sysctl value will echo that back out.
+You can write random contents to `ftrace_enabled` and it'll echo it back out,
+when the write should otherwise fail.
 
 ```
 python3 bad_ftrace_value.py
