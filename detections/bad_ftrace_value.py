@@ -8,7 +8,7 @@ you can detect this behaviour by writing to /tmp/ftrace_enabled and then try to
 read the sysctl() version.
 """
 
-VALUE = b'abcd'
+VALUE = b'-99999999999999999999'
 
 try:
     with open('/proc/sys/kernel/ftrace_enabled', 'wb') as f:
@@ -24,7 +24,7 @@ with open('/proc/sys/kernel/ftrace_enabled', 'rb') as f:
     curr = f.read()
 
 print(curr)
-if VALUE in curr:
+if curr in VALUE:
     print('s1ngular1ty detected')
 else:
     print('weird behaviour, able to write invalid value to ftrace_enabled but its not preserved')
