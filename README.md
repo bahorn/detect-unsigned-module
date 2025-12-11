@@ -101,9 +101,13 @@ $ sudo python3 diff_devkmsg_klogctl.py
 #### `hooked_insmod.py`
 
 Singularity hooks `init_module()` to always
-return 0, even for unpriv'd users.
+return 0, even for unpriv'd users in older versions.
 So you can attempt to load an invalid module from any user and see if the return
 code is 0, and if so you got a detection.
+
+In newer versions, singularity always returns ENOEXEC for everyone, even
+unprived users.
+We'd expect EPERM for them, so catching that.
 
 ```
 python3 hooked_insmod.py
