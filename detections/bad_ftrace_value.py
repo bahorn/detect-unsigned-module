@@ -12,36 +12,18 @@ detection.
 """
 import time
 
-# first we try too large of a value, that detects older versions
-def to_large():
-    VALUE = b'9999999999999999999'
-
+def try_write(value):
     try:
         with open('/proc/sys/kernel/ftrace_enabled', 'wb') as f:
-            f.write(VALUE)
+            f.write(value) 
     except OSError:
         return False
 
-    time.sleep(1)
-
-    with open('/proc/sys/kernel/ftrace_enabled', 'rb') as f:
-        curr = f.read()
-
-    print(curr)
     return True
 
-# otherwise write a hex value, which singularity does't support
-# til you patch it :) hi!
-def with_hex():
-    try:
-        with open('/proc/sys/kernel/ftrace_enabled', 'wb') as f:
-            f.write(b'0xa')
-    except OSError:
-        return True
-
-    return False
-
-if to_large() or with_hex():
+if try_write(b'9999999999999999999') or \
+        (not try_write(b'0xa')) or \
+        (try_write(b'0' * 32)):
     print('singularity detected')
 else:
     print('no tampering detected')
