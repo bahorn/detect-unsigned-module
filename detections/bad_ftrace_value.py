@@ -8,7 +8,7 @@ you can detect this behaviour by writing to /tmp/ftrace_enabled and then try to
 read the sysctl() version.
 """
 
-VALUE = b'-99999999999999999999'
+VALUE = b'9999999999999999999'
 
 try:
     with open('/proc/sys/kernel/ftrace_enabled', 'wb') as f:
