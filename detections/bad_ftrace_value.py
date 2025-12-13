@@ -12,9 +12,15 @@ detection.
 """
 import time
 
-def try_write(value, write_extra=False):
+def try_write(value, offset=0, strict=True, write_extra=False):
+    res = True
+    if not strict:
+        with open('/proc/sys/kernel/sysctl_writes_strict', 'wb') as f:
+            f.write(b'0')
     try:
         with open('/proc/sys/kernel/ftrace_enabled', 'wb', buffering=0) as f:
+            if offset > 0:
+                f.write(b' ' * offset)
             f.write(bytearray(value))
             # this is a bit dumb, but i had problems getting my python code to
             # trigger something i could easily do from bash.
@@ -23,16 +29,21 @@ def try_write(value, write_extra=False):
             if write_extra:
                 f.write(b'\x00\x001\x00\x00')
     except OSError:
-        return False
+        res = False
 
-    return True
+    if not strict:
+        with open('/proc/sys/kernel/sysctl_writes_strict', 'wb') as f:
+            f.write(b'1')
+
+    return res
 
 if try_write(b'9999999999999999999') or \
         (not try_write(b'0xa')) or \
         try_write(b'0' * 32) or \
-        (not try_write(b'1\x0a\x00', True)) or \
+        (not try_write(b'1\x0a\x00', write_extra=True)) or \
         (not try_write(b' '*512 + b'1')) or \
-        (not try_write(b'\f-0x00')):
+        (not try_write(b'\f-0x00')) or \
+        try_write(b'0x1', offset=1, strict=False):
     print('singularity detected')
 else:
     print('no tampering detected')
