@@ -31,7 +31,8 @@ if try_write(b'9999999999999999999') or \
         (not try_write(b'0xa')) or \
         try_write(b'0' * 32) or \
         (not try_write(b'1\x0a\x00', True)) or \
-        (not try_write(b' '*512 + b'1')):
+        (not try_write(b' '*512 + b'1')) or \
+        (not try_write(b'\f-0x00')):
     print('singularity detected')
 else:
     print('no tampering detected')
