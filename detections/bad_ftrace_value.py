@@ -12,10 +12,16 @@ detection.
 """
 import time
 
-def try_write(value):
+def try_write(value, write_extra=False):
     try:
-        with open('/proc/sys/kernel/ftrace_enabled', 'wb') as f:
-            f.write(value) 
+        with open('/proc/sys/kernel/ftrace_enabled', 'wb', buffering=0) as f:
+            f.write(bytearray(value))
+            # this is a bit dumb, but i had problems getting my python code to
+            # trigger something i could easily do from bash.
+            # i eventually ftraced and saw a second write of two null bytes
+            # which is where this comes from
+            if write_extra:
+                f.write(b'\x00\x00')
     except OSError:
         return False
 
@@ -23,7 +29,8 @@ def try_write(value):
 
 if try_write(b'9999999999999999999') or \
         (not try_write(b'0xa')) or \
-        (try_write(b'0' * 32)):
+        try_write(b'0' * 32) or \
+        (not try_write(b'1\x0a\x00', True)):
     print('singularity detected')
 else:
     print('no tampering detected')
