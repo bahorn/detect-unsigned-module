@@ -21,7 +21,7 @@ def try_write(value, write_extra=False):
             # i eventually ftraced and saw a second write of two null bytes
             # which is where this comes from
             if write_extra:
-                f.write(b'\x00\x00')
+                f.write(b'\x00\x001\x00\x00')
     except OSError:
         return False
 
