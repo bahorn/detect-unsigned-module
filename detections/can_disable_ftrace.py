@@ -22,7 +22,8 @@ if curr == orig:
     exit()
 
 with open('/sys/kernel/debug/tracing/set_ftrace_filter', 'wb') as f:
-    f.write(b'__x64_sys_write')
+    f.write(b'run_init_process\n')
+    f.write(b'__x64_sys_write\n')
 
 # singularity fakes this value in recent versions, so we just try and setup a
 # function
@@ -37,6 +38,10 @@ with open('/sys/kernel/debug/tracing/trace', 'r') as f:
     for line in f:
         if '#' not in line:
             faking = True
+
+with open('/sys/kernel/debug/tracing/enabled_functions', 'r') as f:
+    if 'run_init_process' in f.read():
+        faking = True
 
 with open('/sys/kernel/debug/tracing/current_tracer', 'wb') as f:
     f.write(b'nop\n')
