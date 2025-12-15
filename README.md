@@ -131,7 +131,17 @@ You can write random contents to `ftrace_enabled` and it'll echo it back out,
 when the write should otherwise fail.
 
 ```
-python3 bad_ftrace_value.py
+sudo python3 bad_ftrace_value.py
+```
+
+#### `try_ftrace.py`
+
+Detection tries to use ftrace normally and see if our touched symbols show up or
+not.
+If they don't it indicates filtering based on prior hooks.
+
+```
+sudo python3 try_ftrace.py
 ```
 
 #### `nitara2.sh`
