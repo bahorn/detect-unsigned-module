@@ -42,8 +42,8 @@ build-nitara2:
 
 batch-tests rootkit="none":
     just load-{{ rootkit }}
-    # is something blocking use from turning ftrace off
-    sudo python3 detections/can_disable_ftrace.py
+    # combination of multiple ftrace based detection methods
+    sudo python3 detections/ftrace_func.py
 
     # a detection for singularity trying to break the previous detection
     sudo python3 detections/bad_ftrace_value.py
@@ -64,9 +64,6 @@ batch-tests rootkit="none":
     # if you have previously ran the tests this will return positive
     sudo python3 detections/pcrtest.py
 
-    # check if kallsyms_lookup_name has been used
-    sudo python3 detections/touched_kallsyms.py
-
     # compare the output of two different ways of reading the kernel message
     # buffer
     sudo python3 detections/diff_devkmsg_klogctl.py
@@ -76,13 +73,6 @@ batch-tests rootkit="none":
     # touched_functions.
     # Experimental, might have false positives.
     sudo python3 detections/count_trampolines.py
-
-    # Looks at who calls commonly hooked functions.
-    # Ftrace provides caller information via trace_pipe, so we setup ftrace
-    # normally and see if we spot an unexpected caller.
-    # This can interfere with the current counting trampolines implementation.
-    # DISABLED as it takes too long and singularity worked around it
-    # sudo python3 detections/function_trace_parents.py
 
 batch-tests-lkm rootkit="none":
     just batch-tests {{ rootkit }}

@@ -113,14 +113,16 @@ We'd expect EPERM for them, so catching that.
 python3 hooked_insmod.py
 ```
 
-#### `can_disable_ftrace.py`
+#### `ftrace_func.py`
 
-Checks if it is possible to disable ftrace.
-Singularity hooks `write()` to try and stop it being disables, but this
-behaviour is detectable.
+Multiple ftrace based tests, checking:
+* can we disable ftrace
+* is disabling being faked
+* tries to see if enabled functions are being hidden
+* any sus functions in touched_functions
 
 ```
-sudo python3 can_disable_ftrace.py
+sudo python3 ftrace_func.py
 ```
 
 #### `bad_ftrace_value.py`
@@ -132,16 +134,6 @@ when the write should otherwise fail.
 
 ```
 sudo python3 bad_ftrace_value.py
-```
-
-#### `try_ftrace.py`
-
-Detection tries to use ftrace normally and see if our touched symbols show up or
-not.
-If they don't it indicates filtering based on prior hooks.
-
-```
-sudo python3 try_ftrace.py
 ```
 
 #### `nitara2.sh`
@@ -161,17 +153,6 @@ Detects kovid by looking at if the kernels taint value is reset every 5 seconds.
 
 ```
 sudo python3 pcrtest.py
-```
-
-#### `touched_kallsyms.py`
-
-The [classic kprobe trick to get the address of `kallsyms_lookup_name()`](https://github.com/xcellerator/linux_kernel_hacking/issues/3#issuecomment-75795111) leaves
-an artifact in `/sys/kernel/debug/tracing/touched_functions`.
-If you grep that file for `kallsyms_lookup_name` and find it, someone used the
-trick.
-
-```
-sudo python3 touched_kallsyms.py
 ```
 
 #### `seek_stutter.py`
