@@ -5,6 +5,8 @@ matches the number in touched_functions.
 might have false positives, unsure how it handles removing ftrace hooks
 """
 
+THRESHOLD = 10
+
 def normalize_lines(text):
     """Merge lines starting with whitespace to the previous line."""
     lines = text.split('\n')
@@ -50,6 +52,11 @@ with open('/proc/kallsyms', 'r') as f:
 print(tramp_count_in_ftrace, tramp_count_in_vmalloc, tramp_count_in_kallsyms)
 if tramp_count_in_ftrace != tramp_count_in_vmalloc or \
         tramp_count_in_ftrace != tramp_count_in_kallsyms:
-    print('mismatched trampoline count!')
+    print('mismatched trampoline count, can happen naturally')
 else:
     print('trampoline count matches')
+
+
+if tramp_count_in_vmalloc > THRESHOLD or tramp_count_in_kallsyms > THRESHOLD:
+    print('more trampolines that can happen on a normal system')
+    print('indicates usage of an ftrace hooking framework')
