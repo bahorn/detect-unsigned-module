@@ -4,6 +4,7 @@ matches the number in touched_functions.
 
 might have false positives, unsure how it handles removing ftrace hooks
 """
+import time
 
 THRESHOLD = 10
 
@@ -26,6 +27,19 @@ def has_flag(line, flag):
     if len(parts) < 3:
         return False
     return flag in parts[2:]
+
+# use ftrace once so there is at least one trampoline
+with open('/sys/kernel/debug/tracing/set_ftrace_filter', 'w') as f:
+    f.write('initcall_blacklisted')
+
+with open('/sys/kernel/debug/tracing/current_tracer', 'w') as f:
+    f.write('function')
+ 
+with open('/sys/kernel/debug/tracing/current_tracer', 'w') as f:
+    f.write('nop')
+
+with open('/sys/kernel/debug/tracing/set_ftrace_filter', 'w') as f:
+    f.write('')
 
 with open('/sys/kernel/debug/tracing/touched_functions') as f:
     enabled_functions = normalize_lines(f.read())
@@ -56,6 +70,8 @@ if tramp_count_in_ftrace != tramp_count_in_vmalloc or \
 else:
     print('trampoline count matches')
 
+if tramp_count_in_ftrace == 0 or tramp_count_in_vmalloc == 0 or tramp_count_in_kallsyms == 0:
+    print('no trampolines after setting up ftrace, likely attempting to hide')
 
 if tramp_count_in_vmalloc > THRESHOLD or tramp_count_in_kallsyms > THRESHOLD:
     print('more trampolines that can happen on a normal system')
