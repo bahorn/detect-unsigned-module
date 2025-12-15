@@ -47,7 +47,8 @@ batch-tests rootkit="none":
     # a detection for singularity trying to break the previous detection
     sudo python3 detections/bad_ftrace_value.py
     # try using ftrace and look for symbols we use being filtered
-    sudo python3 detections/try_ftrace.py
+    # temp disabled as it doesn't play nice with other detections
+    # sudo python3 detections/try_ftrace.py
     # look for singularity's init_module() hook
     # MUST be done as an unprived user
     python3 detections/hooked_insmod.py
