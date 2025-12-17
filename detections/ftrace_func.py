@@ -79,6 +79,33 @@ class Ftrace:
         """
         self.write_sysctl('kernel.ftrace_enabled', 0)
 
+    def tracing_on(self):
+        """
+        writes to tracing_on to enable writing to the kernel buffers.
+        """
+        self._atomic_write(f'{self._tracefs}/tracing_on', 1)
+
+    def tracing_off(self):
+        """
+        writes to tracing_on to disable writing to the kernel buffers
+
+        note that this DOES not remove hooks, and can not be used to bypass
+        hooks.
+
+        some kits do try to hook this, but it does nothing.
+        """
+        self._atomic_write(f'{self._tracefs}/tracing_on', 0)
+
+    def setup(self):
+        """
+        Get ftrace into a state we can trace with, disabling any existing
+        tracing going on.
+        """
+        self.enable()
+        self.current_tracer('nop')
+        self.write_tracefs('set_ftrace_filter', '')
+        self.tracing_on()
+
     def read_sysctl(self, name):
         cleaned = name.replace('.', '/')
         return self._atomic_read(f'{self._sysctl}/{cleaned}')
@@ -162,11 +189,21 @@ class Report:
 
 
 class Message:
-    def __init__(self, msg):
+    """
+    Wrapper for test results.
+
+    * test is for the test type we are running
+    * message for human readable description
+    * extra for extra log info for machine parsing
+    """
+
+    def __init__(self, test, msg, extra=None):
+        self._test = test
         self._msg = msg
+        self._extra = extra
 
     def __str__(self):
-        return f'{self.TYPE} - {self._msg}'
+        return f'{self.TYPE} - {self._test} - {self._msg}'
 
 
 class Detection(Message):
@@ -191,17 +228,6 @@ def assert_root():
     assert os.geteuid() == 0
 
 
-def initial_setup(ft):
-    """
-    just ensure ftrace is in the state we need
-    """
-    if not ft.status():
-        report.log(Info('ftrace not enabled, enabling'))
-        ft.enable()
-    else:
-        report.log(Info('ftrace already enabled'))
-
-
 def can_disable_ftrace(ft):
     """
     check if can enable / disable ftrace
@@ -212,10 +238,10 @@ def can_disable_ftrace(ft):
     """
     ft.disable()
     if ft.status() != False:
-        report.log(Detection('unable to disable ftrace'))
+        report.log(Detection('can_disable_ftrace', 'unable to disable ftrace'))
         res = False
     else:
-        report.log(Info('able to disable ftrace'))
+        report.log(Info('can_disable_ftrace', 'able to disable ftrace'))
         res = True
     ft.enable()
 
@@ -231,7 +257,11 @@ def check_faking_ftrace_disabled(ft):
     test_fun = 'run_init_process'
     ft.disable()
     if len(ft.enabled_functions()) > 0:
-        report.log(Detection('ftrace is disabled but still enabled functions'))
+        report.log(Detection(
+            'check_faking_ftrace_disabled',
+            'ftrace is disabled but still enabled functions'
+            )
+        )
 
     tracer = ft.function_tracer()
     # we assume this function hasn't already been traced
@@ -244,9 +274,15 @@ def check_faking_ftrace_disabled(ft):
     tracer.clear_filter()
 
     if test_fun in enabled:
-        report.log(Detection('faking ftrace being disabled'))
+        report.log(Detection(
+            'check_faking_ftrace_disabled',
+            'faking ftrace being disabled')
+        )
     else:
-        report.log(Info('doesnt seem to be faking ftrace being disabled'))
+        report.log(Info(
+            'check_faking_ftrace_disabled',
+            'doesnt seem to be faking ftrace being disabled')
+        )
 
     ft.enable()
 
@@ -255,12 +291,18 @@ def sus_touched_functions(ft):
     """
     check for functions that indicate a hooking framework.
     """
-    return list(
+    sus_touched = list(
         filter(
             lambda x: x in SUS_FUNCS,
             [func for func in ft.touched_functions()]
         )
     )
+    if len(sus_touched) > 0:
+        report.log(Detection(
+            'sus_touched_functions', 'sus function found' + str(s), s)
+        )
+    else:
+        report.log(Info('sus_touched_functions', 'no sus functions found'))
 
 
 def try_commonly_hooked(ft):
@@ -287,9 +329,9 @@ def try_commonly_hooked(ft):
     tracer.disable()
 
     if len(funcs_to_try) != len(funcs):
-        report.log(Detection('filtered functions!'))
+        report.log(Detection('try_commonly_hooked', 'filtered functions!'))
     else:
-        report.log(Info('no filtered functions'))
+        report.log(Info('try_commonly_hooked', 'no filtered functions'))
 
 
 def main():
@@ -298,13 +340,11 @@ def main():
 
     # now perform our functionality tests
     ft = Ftrace()
-    initial_setup(ft)
+    ft.setup()
 
     # only want to perform this test if everything hasn't already been traced
     if True:
         s = sus_touched_functions(ft)
-        if len(s) > 0:
-            report.log(Detection('sus functions' + str(s)))
 
     if can_disable_ftrace(ft):
         # perform tests to see if this is being faked
