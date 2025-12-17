@@ -3,6 +3,7 @@ This is a script to do behavioural testing of ftrace, based off a collection of
 other scripts that got merged into just this one.
 """
 import os
+import sys
 import time
 # to detect the kprobe trick to resolve symbols
 SUS_FUNCS = 'kallsyms_lookup_name'
@@ -98,6 +99,12 @@ class Ftrace:
         else:
             self.read_tracefs('current_tracer')
 
+    def set_option(self, option, value=1):
+        """
+        set an option
+        """
+        self.write_tracefs(f'options/{option}', value)
+
     def function_tracer(self):
         """
         Returns a object to configure the function tracer
@@ -139,6 +146,44 @@ class FunctionTracer(Tracer):
     NAME = 'function'
 
 
+class Report:
+    """
+    Logger to handle the information we generate.
+    """
+    def __init__(self):
+        self._messages = []
+
+    def log(self, message):
+        self._messages.append(message)
+        print(message, file=sys.stderr)
+
+    def __str__(self):
+        return '\n'.join(map(str, self._messages))
+
+
+class Message:
+    def __init__(self, msg):
+        self._msg = msg
+
+    def __str__(self):
+        return f'{self.TYPE} - {self._msg}'
+
+
+class Detection(Message):
+    TYPE = 'DETECTION'
+
+class Anomaly(Message):
+    TYPE = 'ANOMALY'
+
+class Info(Message):
+    TYPE = 'INFO'
+
+class Error(Message):
+    TYPE = 'ERROR'
+
+# just a logger
+report = Report()
+
 def assert_root():
     """
     check we have root, else we won't be able to do anything
@@ -151,10 +196,10 @@ def initial_setup(ft):
     just ensure ftrace is in the state we need
     """
     if not ft.status():
-        print('ftrace not enabled, enabling')
+        report.log(Info('ftrace not enabled, enabling'))
         ft.enable()
     else:
-        print('ftrace already enabled')
+        report.log(Info('ftrace already enabled'))
 
 
 def can_disable_ftrace(ft):
@@ -167,10 +212,10 @@ def can_disable_ftrace(ft):
     """
     ft.disable()
     if ft.status() != False:
-        print('unable to disable ftrace')
+        report.log(Detection('unable to disable ftrace'))
         res = False
     else:
-        print('able to disable ftrace')
+        report.log(Info('able to disable ftrace'))
         res = True
     ft.enable()
 
@@ -186,7 +231,7 @@ def check_faking_ftrace_disabled(ft):
     test_fun = 'run_init_process'
     ft.disable()
     if len(ft.enabled_functions()) > 0:
-        print('ftrace is disabled but still enabled functions')
+        report.log(Detection('ftrace is disabled but still enabled functions'))
 
     tracer = ft.function_tracer()
     # we assume this function hasn't already been traced
@@ -199,9 +244,9 @@ def check_faking_ftrace_disabled(ft):
     tracer.clear_filter()
 
     if test_fun in enabled:
-        print('faking ftrace being disabled')
+        report.log(Detection('faking ftrace being disabled'))
     else:
-        print('doesnt seem to be faking ftrace being disabled')
+        report.log(Info('doesnt seem to be faking ftrace being disabled'))
 
     ft.enable()
 
@@ -242,9 +287,9 @@ def try_commonly_hooked(ft):
     tracer.disable()
 
     if len(funcs_to_try) != len(funcs):
-        print('filtered functions!')
+        report.log(Detection('filtered functions!'))
     else:
-        print('no filtered functions')
+        report.log(Info('no filtered functions'))
 
 
 def main():
@@ -259,7 +304,7 @@ def main():
     if True:
         s = sus_touched_functions(ft)
         if len(s) > 0:
-            print('sus functions', s)
+            report.log(Detection('sus functions' + str(s)))
 
     if can_disable_ftrace(ft):
         # perform tests to see if this is being faked
