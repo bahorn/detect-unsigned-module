@@ -196,6 +196,15 @@ This detection is bypassable by using the `USE_FENTRY_OFFSET` in the various
 derrivatives of xcellerator's ftrace hooking framework, as the thunk will not be
 triggered twice when calling the original function.
 
+#### `find_hidden_pids.py`
+
+Hunts for pids that are hidden from procfs by using `pidfd_open()` and seeing if
+a pid exists that doesn't show up in procfs.
+
+```
+sudo python3 find_hidden_pids.py
+```
+
 ### Tools
 
 These are found in `tools/` and might be handy in some cases.
