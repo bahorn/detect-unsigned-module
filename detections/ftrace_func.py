@@ -298,9 +298,10 @@ def sus_touched_functions(ft):
         )
     )
     if len(sus_touched) > 0:
-        report.log(Detection(
-            'sus_touched_functions', 'sus function found' + str(s), s)
-        )
+        for s in sus_touched:
+            report.log(Detection(
+                'sus_touched_functions', 'sus function found' + str(s), s)
+            )
     else:
         report.log(Info('sus_touched_functions', 'no sus functions found'))
 
